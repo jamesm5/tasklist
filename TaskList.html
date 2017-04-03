@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body ng-app="myApp" ng-controller="TasksController">
+
+<div class="container">
+	<h1>Tasks</h1>
+		         
+	<div class="form-field">
+  	<label for="text-input"></label>
+  	<input type="text" name="text-input" id="text-input" placeholder="Filter Tasks" ng-model="taskFilter"/>
+  	<br>
+  	<a href="" ng-click= "priorityOrder=!priorityOrder">Order by priority</a>
+	</div>
+	<br>
+
+	<div ng-repeat="task in tasks | filter:taskFilter | orderBy:'priority': reverse=priorityOrder"> 
+		<div class="well">
+			<h4>{{task.name}} ({{task.priority}})</h4>
+			<a href="" ng-click="RemoveTask(task)">Remove</a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<a href="" ng-click="showAddNewTask = !showAddNewTask">Add a new task</a>
+			<div ng-show="showAddNewTask">
+				<div class="form-group">
+					<input type="text" ng-model="newTask" class="form-control" />
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Add Task" ng-click="AddNewTask()" class="btn btn-primary" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<pre> {{tasks | json  }} </pre>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+
+<script>
+	var myApp = angular.module("myApp", []);
+
+	myApp.controller("TasksController", ["$scope", function($scope) {
+		$scope.tasks = [
+			{
+				"name": "build a demo",
+				"priority": 1
+			}, {
+				"name": "make a cup of tea",
+				"priority": 2
+			}, {
+				"name": "have a biscuit",
+				"priority": 3
+			}, {
+				"name": "learn some more Angular",
+				"priority": 4
+			}
+		];
+
+		$scope.AddNewTask = function() {
+			$scope.tasks.push({ name: $scope.newTask, priority: 1 });
+		};
+
+		$scope.RemoveTask = function(task) {
+			$scope.tasks.splice($scope.tasks.indexOf(task), 1);
+		};
+
+	}]);
+</script>
+
+</body>
+</html>
